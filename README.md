@@ -6,7 +6,8 @@
 
 <br clear="left">
 
-![Portada de la web: título, resumen en dona y la mascota como guía](docs/capturas/01-inicio.jpg)
+<img width="799" height="426" alt="image" src="https://github.com/user-attachments/assets/81f5c507-1d21-4133-8532-86844d0685ae" />
+
 
 | Cifra | Qué es |
 |---|---|
