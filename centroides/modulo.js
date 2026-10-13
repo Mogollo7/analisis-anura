@@ -34,7 +34,7 @@ A.modulo({
         '<ol class="tres"><li><div><b>Centroide</b><span>El punto medio de todas las fotos de entrenamiento de una especie.</span></div></li>' +
         "<li><div><b>Dispersión</b><span>Qué tan repartidas están las fotos alrededor de su centroide.</span></div></li>" +
         "<li><div><b>Distancia a la vecina</b><span>Qué tan lejos queda el centroide de la especie más parecida.</span></div></li></ol>",
-      guia: ["Dato de clase.", "El modelo convierte cada foto en un punto. Una foto nueva se asigna a la especie cuyo <strong>centroide</strong> le queda más cerca. Si dos centroides están pegados, las confunde."]
+      guia: ["Dato de clase.", "El modelo convierte cada foto en un punto. En el ranking de especies, la foto se compara con el <strong>centroide</strong> de cada una. Si dos centroides están pegados, se parecen demasiado y se confunden."]
     }, {
       id: "mapa", tarjeta: [esp.length, "centroides en el mapa"], t: "Mapa",
       plomo: "Los 24 centroides del diagnóstico, aplanados a dos dimensiones. Pasa por un punto para ver su vecina.",
