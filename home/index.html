@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anura · Análisis</title>
+<meta name="description" content="Análisis de Anura, una app para la identificación de anuros: distribución de especies, centroides, precisión del modelo y especies desconocidas.">
+<script>try{document.documentElement.dataset.theme=localStorage.getItem("tema")||(matchMedia("(prefers-color-scheme: dark)").matches?"tinta":"papel")}catch(e){}</script>
+<link rel="stylesheet" href="../assets/tokens.css">
+<link rel="stylesheet" href="../assets/ndg.css">
+<link rel="stylesheet" href="../assets/app.css">
+</head>
+<body class="ndg-fondo-puntos">
+<header class="barra" id="barra"></header>
+<main>
+  <section class="heroe">
+    <div class="heroe__esfera" id="esfera"></div>
+    <div class="heroe__in">
+      <div>
+        <p class="miga">Anura · análisis</p>
+        <h1>¿Qué tan bien reconoce Anura a las ranas de Colombia?</h1>
+        <p class="heroe__sub">Análisis de Anura, una app para la identificación de anuros.</p>
+        <div class="heroe__cta">
+          <a class="btn" href="https://anura.juanlabs.me/inicio" target="_blank" rel="noopener noreferrer">Probar Anura<span class="solo-lector"> (se abre en otra pestaña)</span> <span id="ico-ir"></span></a>
+          <a class="btn btn--suave" href="#recorrido">Ver el análisis</a>
+        </div>
+        <div class="guia" style="margin-top:34px"><div id="guia-m"></div><div class="bocadillo" id="guia-b" aria-live="polite"></div></div>
+      </div>
+      <div class="resumen" aria-label="Resumen">
+        <div id="fichas"></div>
+        <div id="dona"></div>
+        <p class="resumen__l" id="base"></p>
+      </div>
+    </div>
+  </section>
+  <div id="error"></div>
+
+  <section class="seccion" id="anura">
+    <p class="miga">La aplicación</p>
+    <h2>Anura identifica ranas y sapos a partir de una foto</h2>
+    <div class="caja anura" data-rev>
+      <figure class="foto"><img src="../assets/fotos/pithecopus-hypochondrialis.jpg" alt="Rana Pithecopus hypochondrialis caminando sobre una rama" loading="lazy"><figcaption><em>Pithecopus hypochondrialis</em></figcaption></figure>
+      <ol class="tres">
+        <li><div><b>Tomas la foto</b><span>En campo, con el teléfono y sin conexión.</span></div></li>
+        <li><div><b>El modelo la compara</b><span>La convierte en un punto y busca el centroide de especie más cercano.</span></div></li>
+        <li><div><b>Responde</b><span>Propone la especie más probable… o debería decir «no la conozco».</span></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="seccion" id="recorrido">
+    <p class="miga">El recorrido</p>
+    <h2>Cinco campos, de lo general a lo difícil</h2>
+    <div class="ruta" id="ruta"></div>
+  </section>
+
+  <section class="seccion" id="datos">
+    <p class="miga">Los datos</p>
+    <h2>Cada cifra pasa por una carga que se hace entera o no se hace</h2>
+    <div class="caja anura" data-rev>
+      <ol class="tres">
+        <li><div><b>Leer</b><span>Un script lee las evaluaciones del proyecto Anura. Nada se escribe a mano.</span></div></li>
+        <li><div><b>Validar</b><span>Todo entra en una sola transacción de SQLite. Si una fila rompe una regla, se revierte entera.</span></div></li>
+        <li><div><b>Publicar</b><span>Solo tras el COMMIT se exportan los archivos que lee esta página.</span></div></li>
+      </ol>
+      <div>
+        <pre class="ndg-terminal">$ python src/build_data.py
+COMMIT: distribucion.json, modelo.json,
+mejora.json, openset.json, centroides.json
++ database/anura_acid.db</pre>
+        <details><summary>Qué significa ACID aquí</summary>
+          <p class="plomo" style="margin-top:0"><strong>Atomicidad:</strong> todo o nada. <strong>Consistencia:</strong> las reglas CHECK del esquema. <strong>Aislamiento:</strong> la carga bloquea la base mientras escribe. <strong>Durabilidad:</strong> tras el COMMIT queda en disco. La página publicada solo lee.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+</main>
+<footer class="pie" id="pie"></footer>
+<script src="../assets/ndg.js"></script>
+<script src="../assets/app.js"></script>
+<script>
+A.marco("home");
+document.getElementById("esfera").innerHTML = NotasDotGrid.esferaPuntos({ color: "#fff", n: 900 });
+document.getElementById("ico-ir").outerHTML = A.ico("externo");
+var guia = A.viva("#guia-m", "gota", "feliz");
+A.di("#guia-b", "Hola.", "Soy tu guía. Toca las fichas del resumen y te cuento qué significa cada cifra.");
+
+Promise.all(["distribucion", "modelo", "mejora", "openset", "centroides"].map(A.datos)).then(function (d) {
+  var t = d[0].totales, m = d[1].meta, prior = d[2].prior, vis = d[3].configs[0], cen = d[4];
+  var fuera = t.especies - t.especies_modelo, pct0 = function (v) { return A.pct(v, 0); };
+
+  // resumen en dona: una proporción cada vez
+  var vistas = {
+    catalogo: [t.especies_modelo / t.especies, "de las especies del catálogo están <strong>en el modelo</strong>", A.num(t.especies) + " especies en el catálogo",
+      "Resumen.", "El catálogo tiene " + A.num(t.especies) + " especies y el modelo conoce " + t.especies_modelo + ". Las otras " + fuera + " son su punto ciego.", "feliz"],
+    datos: [t.registros_modelo / t.registros, "de los registros son de <strong>esas " + t.especies_modelo + " especies</strong>", A.num(t.registros) + " registros de GBIF",
+      "¿Sabías?", "Son pocas especies, pero las más observadas: con el " + pct0(t.especies_modelo / t.especies) + " del catálogo cubren más de la mitad de los datos.", "duda"],
+    acierto: [m.top1_global, "acierta <strong>a la primera</strong>, solo con la foto", A.num(m.n_test) + " fotos de prueba",
+      "Ojo:", "falla sobre todo entre especies hermanas. Lo que lo explica no es el número de fotos, sino qué tan separados están sus centroides.", "alerta"],
+    ubicacion: [prior.mejor.top1, "acierta con <strong>foto y ubicación</strong>", A.num(prior.cobertura.test_con_coords) + " fotos con coordenadas",
+      "Para recordar.", "Saber dónde se tomó la foto es la mejora más grande medida: de " + pct0(prior.barrido[0].top1) + " a " + pct0(prior.mejor.top1) + ".", "celebra"],
+    desconocidas: [vis.far, "de las especies desconocidas <strong>pasan por conocidas</strong>", A.num(vis.n_unknown) + " fotos de especies que el modelo no vio",
+      "Cuidado.", "Ante una especie nueva, el modelo casi nunca dice «no la conozco». Es el problema abierto del campo 5.", "sorpresa"]
+  };
+  var pon = A.dona("#dona"), primera = true;
+  A.fichas("#fichas", [["catalogo", "Catálogo"], ["datos", "Datos"], ["acierto", "Acierto"], ["ubicacion", "Con ubicación"], ["desconocidas", "Desconocidas"]], function (v) {
+    var x = vistas[v];
+    pon(x[0], "pct0", x[1]);
+    document.getElementById("base").textContent = "Base: " + x[2] + ".";
+    if (primera) { primera = false; return; } // la guía saluda antes de explicar la primera cifra
+    A.di("#guia-b", x[3], x[4]);
+    guia.pon(null, x[5]);
+  });
+
+  var claves = [
+    [t.especies, "num", "especies en el catálogo"],
+    [cen.spearman_separacion, "dec2", "correlación entre separación y acierto"],
+    [m.top1_global, "pct0", "de acierto solo con la foto"],
+    [prior.mejor.top1, "pct0", "de acierto con ubicación"],
+    [vis.far, "pct0", "de desconocidas que se cuelan"]
+  ];
+  document.getElementById("ruta").innerHTML = A.MODULOS.map(function (mod, i) {
+    return '<a class="tarjeta" data-rev style="--i:' + i + '" href="../' + mod.id + '/"><span class="tarjeta__n">Campo ' + (i + 1) + "</span><h3>" + mod.t + "</h3><p>" + mod.d +
+      '</p><b data-n="' + claves[i][0] + '" data-f="' + claves[i][1] + '">0</b><small>' + claves[i][2] + "</small>" + A.ico("flecha") + "</a>";
+  }).join("");
+  A.revela();
+}).catch(function (e) {
+  document.getElementById("error").innerHTML = '<div class="seccion"><div class="error" role="alert"><strong>No se pudieron cargar los datos.</strong> ' + e.message + "</div></div>";
+});
+</script>
+</body>
+</html>

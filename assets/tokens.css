@@ -1,0 +1,19 @@
+/* Notas Dot Grid — tokens del sistema de diseño (tema Papel y tema Tinta). */
+:root {
+  --papel: #ffffff; --tinta: #000000; --tinta-suave: #333333; --guia: #777777;
+  --linea: #aaaaaa; --punto: #bdbdbd; --codigo-fondo: #f3f3f3; --codigo-en-linea: #eeeeee;
+  --inverso-fondo: var(--tinta); --inverso-texto: var(--papel);
+
+  --font-display: "Bricolage Grotesque", "Segoe UI", Arial, sans-serif;
+  --font-texto: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --font-mono: "JetBrains Mono", Consolas, monospace;
+
+  --espacio-1: 4px; --espacio-2: 8px; --espacio-3: 12px; --espacio-4: 16px;
+  --paso-puntos: 22.68px;
+  --radio-0: 0px; --radio-codigo: 2px; --radio-terminal: 3px;
+  --regla-titulo: 2px; --regla-tabla: 1.5px; --regla-fila: 0.6px; --borde-nota: 1.6px; --borde-resumen: 3px;
+}
+:root[data-theme="tinta"] {
+  --papel: #000000; --tinta: #ffffff; --tinta-suave: #cfcfcf; --guia: #8a8a8a;
+  --linea: #666666; --punto: #2c2c2c; --codigo-fondo: #161616; --codigo-en-linea: #262626;
+}

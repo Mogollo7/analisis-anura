@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# build_data.py escribe a un temporal y lo renombra: nunca debe quedar uno a medias
+*.tmp
+database/*.db-journal
+database/*.db-wal
+database/*.db-shm
+
+# Secretos y configuración local
+.env
+.env.*
+!.env.example
+
+# Herramientas y editores
+.claude/
+.cursor/
+.agents/
+.idea/
+.vscode/
+
+# Sistema operativo
+Thumbs.db
+desktop.ini
+.DS_Store

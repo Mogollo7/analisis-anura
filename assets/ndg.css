@@ -1,0 +1,85 @@
+@import url("https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700;12..96,800&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,700;1,8..60,400&family=JetBrains+Mono:wght@400;600&display=swap");
+
+/* Todo se mide en em: el contenedor fija el tamaño (.ndg-impreso para papel, .ndg-pantalla para web y diapositivas). */
+.ndg-impreso { font-size: 8.8pt; }
+.ndg-pantalla { font-size: 17px; }
+.ndg-impreso, .ndg-pantalla {
+  font-family: var(--font-texto, "Source Serif 4", Georgia, serif);
+  color: var(--tinta, #000); line-height: 1.42;
+}
+.ndg-pantalla { line-height: 1.6; }
+.ndg-pantalla p, .ndg-impreso p { margin: 0.45em 0; }
+
+.ndg-h1, .ndg-h2, .ndg-h3, .ndg-tabla, .ndg-pie, .ndg-indice {
+  font-family: var(--font-display, "Bricolage Grotesque", "Segoe UI", Arial, sans-serif);
+}
+.ndg-h1 { font-size: 2.61em; font-weight: 800; line-height: 1.05; letter-spacing: -0.01em; margin: 0 0 0.45em;
+  padding-bottom: 0.3em; border-bottom: var(--regla-titulo, 2px) solid var(--tinta, #000); text-wrap: balance; }
+.ndg-h2 { font-size: 1.27em; font-weight: 700; line-height: 1.25; margin: 1.1em 0 0.25em; }
+.ndg-h3 { font-size: 1.07em; font-weight: 700; margin: 0.9em 0 0.2em; }
+.ndg-pie { font-size: 0.82em; color: var(--tinta-suave, #333); }
+
+/* Fondo: los puntos van en el margen; el texto siempre sobre papel liso. */
+.ndg-fondo-puntos {
+  background-color: var(--papel, #fff);
+  background-image: radial-gradient(circle, var(--punto, #bdbdbd) 1px, transparent 1.3px);
+  background-size: var(--paso-puntos, 22.68px) var(--paso-puntos, 22.68px);
+}
+.ndg-hoja { background: var(--papel, #fff); }
+
+/* Mascota */
+.ndg-mascota { display: block; width: 100%; height: auto; }
+
+/* Nota: sin caja; solo una barra a la izquierda y la mascota. */
+.ndg-nota { display: flex; gap: var(--espacio-2, 8px); align-items: flex-start; margin: 0.7em 0;
+  padding-left: var(--espacio-2, 8px); border-left: var(--borde-nota, 1.6px) solid var(--tinta, #000); break-inside: avoid; }
+.ndg-nota__mascota { flex: 0 0 2.5em; }
+.ndg-nota__texto { flex: 1 1 auto; min-width: 0; }
+.ndg-nota__texto p { margin: 0.15em 0; }
+.ndg-nota--resumen { border-left-width: var(--borde-resumen, 3px); padding-left: var(--espacio-3, 12px); gap: var(--espacio-3, 12px); }
+.ndg-nota--resumen .ndg-nota__mascota { flex-basis: 3.9em; }
+
+/* Tabla: reglas horizontales, nunca verticales ni fondo. */
+.ndg-tabla { border-collapse: collapse; width: 100%; font-size: 0.864em; line-height: 1.32; margin: 0.7em 0; }
+.ndg-tabla th { text-align: left; font-weight: 700; padding: 0.35em 0.55em;
+  border-top: var(--regla-tabla, 1.5px) solid var(--tinta, #000); border-bottom: var(--regla-tabla, 1.5px) solid var(--tinta, #000); }
+.ndg-tabla td { padding: 0.35em 0.55em; vertical-align: top; border-bottom: var(--regla-fila, 0.6px) solid var(--linea, #aaa); }
+
+/* Codigo */
+.ndg-codigo-linea, .ndg-codigo, .ndg-terminal { font-family: var(--font-mono, "JetBrains Mono", Consolas, monospace); }
+.ndg-codigo-linea { font-size: 0.84em; background: var(--codigo-en-linea, #eee); padding: 0 0.3em; border-radius: var(--radio-codigo, 2px); }
+.ndg-codigo, .ndg-terminal { font-size: 0.82em; line-height: 1.4; margin: 0.6em 0; white-space: pre-wrap; overflow-wrap: anywhere; }
+.ndg-codigo { background: var(--codigo-fondo, #f3f3f3); border-left: var(--borde-resumen, 3px) solid var(--tinta, #000); padding: 0.6em 0.9em; }
+.ndg-terminal { background: var(--inverso-fondo, #000); color: var(--inverso-texto, #fff); border-radius: var(--radio-terminal, 3px); padding: 0.7em 1em; }
+
+/* Indice */
+.ndg-indice { list-style: none; margin: 0; padding: 0; }
+.ndg-indice li { display: flex; align-items: baseline; gap: 0.5em; }
+.ndg-indice a { color: inherit; text-decoration: none; }
+.ndg-indice__guia { flex: 1 1 auto; min-width: 1em; border-bottom: 1px dotted var(--guia, #777); transform: translateY(-0.25em); }
+.ndg-indice__pag { font-variant-numeric: tabular-nums; }
+.ndg-indice__n1 { font-weight: 800; font-size: 1.25em; margin-top: 0.9em; }
+.ndg-indice__n2 { padding-left: 1.2em; line-height: 1.5; }
+
+/* Portada: siempre negra, en cualquier tema. --mm es la unidad (1mm al imprimir; 2px en una vista previa). */
+.ndg-portada { --mm: 1mm; --pt: calc(var(--mm) * 0.3528); position: relative; overflow: hidden;
+  width: calc(210 * var(--mm)); height: calc(297 * var(--mm)); background-color: #000; color: #fff;
+  background-image: radial-gradient(circle, #2c2c2c calc(0.3 * var(--mm)), transparent calc(0.36 * var(--mm)));
+  background-size: calc(6 * var(--mm)) calc(6 * var(--mm)); }
+.ndg-portada__esfera { position: absolute; right: calc(-52 * var(--mm)); top: calc(14 * var(--mm)); width: calc(168 * var(--mm)); }
+.ndg-portada__esfera svg { display: block; width: 100%; }
+.ndg-portada__titulo { position: absolute; left: calc(20 * var(--mm)); right: calc(20 * var(--mm)); top: calc(150 * var(--mm));
+  font-family: var(--font-display, "Bricolage Grotesque", "Segoe UI", Arial, sans-serif); }
+.ndg-portada__titulo h1 { font-size: calc(50 * var(--pt)); font-weight: 800; line-height: 1; letter-spacing: -0.02em; margin: 0 0 calc(11 * var(--mm)); }
+.ndg-portada__titulo p { font-size: calc(12.5 * var(--pt)); line-height: 1.45; color: #cfcfcf; max-width: calc(120 * var(--mm)); margin: 0; }
+
+/* Diapositiva 16:9: se diseña a 960 x 540 y se escala desde fuera. */
+.ndg-diapositiva { position: relative; width: 960px; height: 540px; overflow: hidden; box-sizing: border-box; }
+.ndg-diapositiva--contenido { padding: 44px; }
+.ndg-diapositiva--contenido .ndg-hoja { height: 100%; box-sizing: border-box; padding: 10px 14px; font-size: 26px; }
+.ndg-diapositiva--portada { background-color: #000; color: #fff;
+  background-image: radial-gradient(circle, #2c2c2c 1px, transparent 1.3px); background-size: 22.68px 22.68px; }
+.ndg-diapositiva--portada .ndg-portada__esfera { right: -120px; top: -40px; width: 560px; }
+.ndg-diapositiva--portada .ndg-portada__titulo { left: 64px; right: 64px; top: auto; bottom: 64px; }
+.ndg-diapositiva--portada h1 { font-size: 76px; margin-bottom: 20px; }
+.ndg-diapositiva--portada p { font-size: 22px; max-width: 560px; }
